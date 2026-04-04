@@ -47,13 +47,41 @@ async function initDatabase() {
 
     // Crear tabla users
     await connection.query(`
-      CREATE TABLE IF NOT EXISTS users(
+      CREATE TABLE IF NOT EXISTS User(
         id varchar(100) PRIMARY KEY,
         username VARCHAR(100),
-        password varchar(100)
+        password varchar(100),
+        urlPhoto varchar(255),
       )
+      CREATE TABLE IF NOT EXISTS Post(
+        id INT IDENTITY(1,1) PRIMARY KEY,
+        date datetime,
+        description varchar(255),
+        photoUrl varchar(255)
+      )
+        CREATE TABLE IF NOT EXISTS Upload(
+        idPost varchar(100) PRIMARY KEY,
+        idUser varchar(100)
+        CONSTRAINT fk_upload_post FOREIGN KEY (idPost) REFERENCES Post(id) ON DELETE CASCADE,
+        CONSTRAINT fk_upload_user FOREIGN KEY (idUser) REFERENCES User(id) ON DELETE CASCADE
+      )
+        CREATE TABLE IF NOT EXISTS Follow(
+        idFollower varchar(100),
+        id varchar(100),
+        CONSTRAINT fk_follow_follower FOREIGN KEY (idFollower) REFERENCES User(id) ON DELETE CASCADE,
+        CONSTRAINT fk_follow_followed FOREIGN KEY (id) REFERENCES User(id) ON DELETE CASCADE
+      )
+      CREATE TABLE IF NOT EXISTS Comment(
+        id varchar(100) PRIMARY KEY,
+        idPost varchar(100),
+        idUser varchar(100),
+        date datetime,
+        description varchar(255),
+        CONSTRAINT fk_comment_post FOREIGN KEY (idPost) REFERENCES Post(id) ON DELETE CASCADE,
+        CONSTRAINT fk_comment_user FOREIGN KEY (idUser) REFERENCES User(id) ON DELETE CASCADE
+        )
     `);
-    console.log("✅ Tabla 'users' creada");
+    console.log("✅ Tablas creadas");
 
     console.log("\n✅ Base de datos y tablas creadas exitosamente");
     await connection.end();
