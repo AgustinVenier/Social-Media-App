@@ -1,12 +1,11 @@
 export interface User {
-  id: number;
+  id: string;
   username: string;
-  photoUrl: string;
-  token: string;
+  urlPhoto: string | null;
 }
 
 export interface Post {
-  id: number;
-  title: string;
-  content: string;
+  idUser: number;
+  description: string;
+  photoUrl: string;
 }

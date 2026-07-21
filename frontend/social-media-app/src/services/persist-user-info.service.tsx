@@ -1,13 +1,19 @@
 import { type User } from "@/models";
+import { setUserCookie, getUserCookie } from "./cookies.service";
 
+/**
+ * Guarda la información del usuario en cookies
+ */
 export const persistenceUserInfo = (userInfo: User) => {
-  cookieStore.set("userInfo", JSON.stringify(userInfo));
+  console.log("Guardando usuario en cookie:", userInfo);
+  setUserCookie(userInfo);
 };
 
-export const getPersistedUserInfo = async () => {
-  const userInfoCookie = await cookieStore.get("userInfo");
-  if (userInfoCookie && userInfoCookie.value) {
-    return JSON.parse(userInfoCookie.value);
-  }
-  return null;
+/**
+ * Obtiene la información del usuario desde cookies (sincrónica)
+ */
+export const getPersistedUserInfo = () => {
+  const user = getUserCookie();
+  console.log("Leyendo usuario desde cookie:", user);
+  return user;
 };

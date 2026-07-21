@@ -1,11 +1,19 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "../App";
 import Register from "./Register";
 import Login from "./Login";
+import Feed from "./Feed";
+import NavBar from "@/components/NavBar";
+
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <NavBar />,
+    children: [
+      {
+        index: true,
+        element: <Feed />,
+      },
+    ],
   },
   {
     path: "/register",

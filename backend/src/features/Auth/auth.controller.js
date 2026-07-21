@@ -28,9 +28,14 @@ async function loginController(req, res) {
       { expiresIn: "24h" },
     );
     res
-      .cookie("token", token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 })
+      .cookie("token", token, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 1000 * 60 * 60 * 24,
+      })
       .status(200)
-      .json({ message: "Login exitoso", token, user });
+      .json({ message: "Login exitoso", user });
   } catch (error) {
     res.status(401).json({ error: error.message });
   }

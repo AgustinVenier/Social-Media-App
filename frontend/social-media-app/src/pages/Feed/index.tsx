@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Post } from "@/models";
+import type { Post } from "@/models";
 type Props = {};
 
 function Feed({}: Props) {
@@ -8,7 +8,7 @@ function Feed({}: Props) {
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["posts"],
     queryFn: async ({ pageParam = 1 }) => {
-      const url = `https://api.example.com/posts?page=${pageParam}`;
+      const url = `http://localhost:3000/api/posts/feed?page=${pageParam}`;
       const res = await axios.get(url, {
         params: { _start: (pageParam - 1) * pageSize, _limit: pageSize },
       });

@@ -2,46 +2,69 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema } from "./schemas/user.schema";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import axios from "axios";
-import Input from "../../components/Input";
-import Button from "../../components/Button";
-import type { AppStore } from "@/redux/store";
+import InputForm from "../../components/InputForm";
+import ButtonForm from "../../components/ButtonForm";
 import { createUser } from "@/redux/states/user.state";
+import { Box, Center, Container, Heading } from "@chakra-ui/react";
+import { persistenceUserInfo } from "@/services/persist-user-info.service";
 
 type Props = {};
 
 function Login({}: Props) {
   const dispatch = useDispatch();
-  const userState = useSelector((store: AppStore) => store.user);
+
   const methods = useForm<userSchema>({
     resolver: zodResolver(userSchema),
   });
   const { mutate, isPending, error } = useMutation({
     mutationFn: async (data: userSchema) => {
-      await axios.post("/api/login", data).then((res) => res.data);
+      console.log("📤 Enviando datos:", data);
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/login",
+        data,
+      );
+      return response.data;
     },
     onSuccess: (data) => {
-      //guardar el token en el estado global (redux)
-      console.log(data);
-      dispatch(createUser(data));
+      console.log("✅ Login exitoso, datos recibidos:", data);
+      console.log("💾 Guardando en cookies...");
+      persistenceUserInfo(data.user);
+      console.log("🔴 Guardando en Redux...");
+      dispatch(createUser(data.user));
+      console.log("🎯 Redirigiendo a /...");
+      // Esperar un poco para asegurar que se actualice Redux antes de redirigir
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 500);
+    },
+    onError: (error) => {
+      console.error("❌ Error en login:", error);
     },
   });
   const onSubmit = (data: userSchema) => {
+    console.log("📝 onSubmit llamado con:", data);
     mutate(data);
-    console.log(data);
   };
   return (
-    <>
-      <FormProvider {...methods}>
-        <form action="/" onSubmit={methods.handleSubmit(onSubmit)}>
-          <Input name="username">Username</Input>
-          <Input name="password">Password</Input>
-          {error && <p className="text-red-500">{error.message}</p>}
-          <Button disabled={isPending}>Enviar</Button>
-        </form>
-      </FormProvider>
-    </>
+    <Center>
+      <Container marginTop={"300px"}>
+        <Heading as="h1" size="2xl" textAlign={"center"} marginBottom={"50px"}>
+          Login
+        </Heading>
+        <FormProvider {...methods}>
+          <form action="/" onSubmit={methods.handleSubmit(onSubmit)}>
+            <InputForm name="username">Username</InputForm>
+            <InputForm name="password">Password</InputForm>
+            {error && <p className="text-red-500">{error.message}</p>}
+            <Box display={"flex"} justifyContent={"center"} marginTop={"20px"}>
+              <ButtonForm disabled={isPending}>Enviar</ButtonForm>
+            </Box>
+          </form>
+        </FormProvider>
+      </Container>
+    </Center>
   );
 }
 

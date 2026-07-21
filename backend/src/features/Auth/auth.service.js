@@ -56,7 +56,9 @@ async function loginAuthService(username, password) {
       throw new Error("Contraseña incorrecta");
     }
 
-    return user;
+    // No devolver el hash de la contraseña al llamador
+    const { password: _password, ...safeUser } = user;
+    return safeUser;
   } catch (error) {
     throw error;
   }

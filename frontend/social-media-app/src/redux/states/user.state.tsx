@@ -2,10 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { type User } from "../../models";
 
 const UserEmptyState: User = {
-  id: 0,
+  id: "",
   username: "",
-  photoUrl: "",
-  token: "",
+  urlPhoto: null,
 };
 
 export const userSlice = createSlice({
