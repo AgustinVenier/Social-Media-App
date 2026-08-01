@@ -12,10 +12,17 @@ function InputForm({ name, children, type }: Props) {
   const { register, formState, getFieldState } = useFormContext();
   const { error } = getFieldState(name, formState);
   return (
-    <div>
-      <Field.Root invalid={!!error}>
-        <Field.Label htmlFor={name}>{children}</Field.Label>
-        <Input {...register(name)} type={type} id={name} />
+    <div style={{ width: "100%" }}>
+      <Field.Root invalid={!!error} width={"100%"}>
+        <Input
+          {...register(name)}
+          size="xl"
+          borderRadius="10px"
+          type={type}
+          id={name}
+          width={"100%"}
+          placeholder={typeof children === "string" ? children : undefined}
+        />
 
         {error?.message && <Field.ErrorText>{error.message}</Field.ErrorText>}
       </Field.Root>

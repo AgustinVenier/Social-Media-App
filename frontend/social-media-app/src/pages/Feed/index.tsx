@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
-import type { Post } from "@/models";
+//import type { Post } from "@/models";
 type Props = {};
 
 function Feed({}: Props) {
@@ -26,7 +26,7 @@ function Feed({}: Props) {
     <div>
       <h1>Feed</h1>
       <div>
-        {posts.map((post: Post) => (
+        {posts?.map((post) => (
           <div key={post.id}>
             <h2>{post.title}</h2>
             <p>{post.content}</p>

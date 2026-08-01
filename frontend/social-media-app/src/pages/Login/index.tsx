@@ -49,20 +49,35 @@ function Login({}: Props) {
   };
   return (
     <Center>
-      <Container marginTop={"300px"}>
+      <Container
+        marginTop={"200px"}
+        width={"700px"}
+        padding={"20px"}
+        boxShadow={"md"}
+      >
         <Heading as="h1" size="2xl" textAlign={"center"} marginBottom={"50px"}>
           Login
         </Heading>
         <FormProvider {...methods}>
           <form action="/" onSubmit={methods.handleSubmit(onSubmit)}>
-            <InputForm name="username">Username</InputForm>
-            <InputForm name="password">Password</InputForm>
+            <Box display={"flex"} justifyContent={"center"} marginTop={"20px"}>
+              <InputForm name="username">Username</InputForm>
+            </Box>
+            <Box display={"flex"} justifyContent={"center"} marginTop={"20px"}>
+              <InputForm name="password">Password</InputForm>
+            </Box>
             {error && <p className="text-red-500">{error.message}</p>}
             <Box display={"flex"} justifyContent={"center"} marginTop={"20px"}>
               <ButtonForm disabled={isPending}>Enviar</ButtonForm>
             </Box>
           </form>
         </FormProvider>
+        <p className="text-center text-gray-500">
+          You are not registered?{" "}
+          <a href="/register" className="text-blue-500 hover:underline">
+            Register here
+          </a>
+        </p>
       </Container>
     </Center>
   );

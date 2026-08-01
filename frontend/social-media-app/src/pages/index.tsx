@@ -3,15 +3,26 @@ import Register from "./Register";
 import Login from "./Login";
 import Feed from "./Feed";
 import NavBar from "@/components/NavBar";
+import CreatePost from "./CreatePost";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <NavBar />,
+    element: <ProtectedRoute />,
     children: [
       {
-        index: true,
-        element: <Feed />,
+        element: <NavBar />,
+        children: [
+          {
+            index: true,
+            element: <Feed />,
+          },
+        ],
+      },
+      {
+        path: "/create",
+        element: <CreatePost />,
       },
     ],
   },

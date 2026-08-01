@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema, type RegisterUser } from "./schemas/user";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { Box, Center, Container, Heading } from "@chakra-ui/react";
 
 function RegisterForm() {
   const navigate = useNavigate();
@@ -31,14 +32,38 @@ function RegisterForm() {
   };
 
   return (
-    <FormProvider {...methods}>
-      <form action="/login" onSubmit={methods.handleSubmit(onSubmit)}>
-        <Input name="username">Username</Input>
-        <Input name="password">Password</Input>
-        {error && <p className="text-red-500">{error.message}</p>}
-        <Button disabled={isPending}>Enviar</Button>
-      </form>
-    </FormProvider>
+    <Center>
+      <Container
+        marginTop={"200px"}
+        width={"700px"}
+        padding={"20px"}
+        boxShadow={"md"}
+      >
+        <Heading as="h1" size="2xl" textAlign={"center"} marginBottom={"50px"}>
+          Register
+        </Heading>
+        <FormProvider {...methods}>
+          <form action="/login" onSubmit={methods.handleSubmit(onSubmit)}>
+            <Box display={"flex"} justifyContent={"center"} marginTop={"20px"}>
+              <Input name="username">Username</Input>
+            </Box>
+            <Box display={"flex"} justifyContent={"center"} marginTop={"20px"}>
+              <Input name="password">Password</Input>
+            </Box>
+            {error && <p className="text-red-500">{error.message}</p>}
+            <Box display={"flex"} justifyContent={"center"} marginTop={"20px"}>
+              <Button disabled={isPending}>Enviar</Button>
+            </Box>
+          </form>
+        </FormProvider>
+        <p className="text-center text-gray-500">
+          Already have an account?{" "}
+          <a href="/login" className="text-blue-500 hover:underline">
+            Login here
+          </a>
+        </p>
+      </Container>
+    </Center>
   );
 }
 

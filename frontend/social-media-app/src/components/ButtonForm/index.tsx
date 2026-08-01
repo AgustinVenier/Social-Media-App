@@ -8,7 +8,14 @@ type Props = {
 
 function ButtonForm({ children, disabled }: Props) {
   return (
-    <Button type="submit" width="100%" borderRadius="100px" disabled={disabled}>
+    <Button
+      colorPalette="blue"
+      variant="solid"
+      type="submit"
+      width="100%"
+      borderRadius="100px"
+      disabled={disabled}
+    >
       {children}
     </Button>
   );
