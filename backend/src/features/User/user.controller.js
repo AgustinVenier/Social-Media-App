@@ -11,7 +11,7 @@ async function getUserController(req, res) {
     const user = await getUserService(userId);
     res.status(200).json(user);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -22,7 +22,7 @@ async function updateUserController(req, res) {
     await updateUserService(userId, username, urlPhoto);
     res.status(200).json({ message: "Usuario actualizado exitosamente" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -33,7 +33,7 @@ async function updateUserPhotoController(req, res) {
     await updateUserPhotoService(userId, urlPhoto);
     res.status(200).json({ message: "Foto actualizada exitosamente" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -46,7 +46,7 @@ async function deleteUserController(req, res) {
       .status(200)
       .json({ message: "Usuario eliminado exitosamente" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 

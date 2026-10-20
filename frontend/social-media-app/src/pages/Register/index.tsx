@@ -13,7 +13,7 @@ function RegisterForm() {
   const { mutate, isPending, error } = useMutation({
     mutationFn: async (data: RegisterUser) => {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/register",
+        "/api/auth/register",
         data,
       );
       return response.data;

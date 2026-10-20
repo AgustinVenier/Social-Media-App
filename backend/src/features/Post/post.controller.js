@@ -14,7 +14,7 @@ async function getFeedController(req, res) {
     const feed = await getFeedService(userId, page, limit);
     res.status(200).json(feed);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -28,7 +28,7 @@ async function createPostController(req, res) {
       postId: post.insertId,
     });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -39,7 +39,7 @@ async function deletePostController(req, res) {
     await deletePostService(id, idUser);
     res.status(200).json({ message: "Post eliminado correctamente" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -51,7 +51,7 @@ async function updatePostController(req, res) {
     await updatePostService(id, idUser, description, photoUrl);
     res.status(200).json({ message: "Post actualizado correctamente" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -61,7 +61,7 @@ async function getPostByIdController(req, res) {
     const post = await getPostByIdService(id);
     res.status(200).json(post);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -72,7 +72,7 @@ async function getPostsByUserController(req, res) {
     const posts = await getPostsByUserService(idUser, page, limit);
     res.status(200).json(posts);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 

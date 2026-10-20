@@ -10,7 +10,7 @@ function useDeleteComment(postId: string) {
       return axios
         .delete<{
           message: string;
-        }>(`http://localhost:3000/api/comments/${comment.id}`)
+        }>(`/api/comments/${comment.id}`)
         .then((res) => res.data);
     },
     onMutate: async (deletedComment) => {
@@ -29,7 +29,7 @@ function useDeleteComment(postId: string) {
 
       return oldComments;
     },
-    onError: (error, deletedComment, context) => {
+    onError: (_error, _deletedComment, context) => {
       queryClient.setQueryData(["comments", postId], context);
     },
     onSettled: () => {

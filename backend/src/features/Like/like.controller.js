@@ -18,7 +18,7 @@ async function likePostController(req, res) {
       likeId: result.insertId,
     });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -29,7 +29,7 @@ async function unlikePostController(req, res) {
     await unlikePostService(idPost, idUser);
     res.status(200).json({ message: "Like removido correctamente" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -39,7 +39,7 @@ async function getLikesCountController(req, res) {
     const count = await getLikesCountService(idPost);
     res.status(200).json({ count });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -49,7 +49,7 @@ async function getLikesOfPostController(req, res) {
     const likes = await getLikesOfPostService(idPost);
     res.status(200).json(likes);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -60,7 +60,7 @@ async function checkIfUserLikedPostController(req, res) {
     const liked = await checkIfUserLikedPostService(idPost, idUser);
     res.status(200).json({ liked });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 

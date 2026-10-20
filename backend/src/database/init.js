@@ -1,57 +1,10 @@
 import mysql from "mysql2/promise";
-import path from "path";
-import { fileURLToPath } from "url";
-import dotenv from "dotenv";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-dotenv.config({ path: path.resolve(__dirname, "../../.env") });
-
-let pool;
-
-const configWithoutDb = {
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD || "",
-  port: process.env.DB_PORT || 3306,
-};
-
-const configWithDb = {
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT || 3306,
-};
-
-async function initDatabase() {
-  let connection;
+import { databaseConfig } from "../config/database.js";
+export { getPool, closePool } from "../config/database.js";
+// Ejecutar explicitamente; la base debe existir y el usuario debe tener permisos DDL.
+export async function initDatabase() {
+  const connection = await mysql.createConnection(databaseConfig());
   try {
-    console.log("Variables de entorno:", {
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      port: process.env.DB_PORT,
-      database: process.env.DB_NAME,
-    });
-
-    console.log("Conectando a MySQL...");
-    connection = await mysql.createConnection(configWithoutDb);
-    console.log("✅ Conexión exitosa a MySQL");
-
-    console.log("Creando base de datos...");
-    await connection.query(
-      `CREATE DATABASE IF NOT EXISTS \`${process.env.DB_NAME}\``,
-    );
-    console.log("✅ Base de datos creada");
-
-    await connection.end();
-
-    connection = await mysql.createConnection(configWithDb);
-    console.log("✅ Conectado a la base de datos");
-
-    console.log("Creando tablas...");
-
     // Tabla User
     await connection.query(`
       CREATE TABLE IF NOT EXISTS User (
@@ -117,28 +70,6 @@ async function initDatabase() {
     `);
     console.log("✅ Tabla Follow creada");
 
-    console.log("✅ Tablas creadas");
-    console.log("\n✅ Base de datos y tablas creadas exitosamente");
-    await connection.end();
-  } catch (error) {
-    console.error("\n❌ Error al inicializar la base de datos:");
-    console.error("Mensaje:", error.message);
-    console.error("Código:", error.code);
-    process.exit(1);
-  }
-}
 
-async function getPool() {
-  if (!pool) {
-    pool = await mysql.createPool(configWithDb);
-  }
-  return pool;
+  } finally { await connection.end(); }
 }
-
-async function closePool() {
-  if (pool) {
-    await pool.end();
-  }
-}
-
-export { initDatabase, getPool, closePool };

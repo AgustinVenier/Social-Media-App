@@ -16,7 +16,7 @@ async function followController(req, res) {
     await followUserByUsernameService(idFollower, username);
     res.status(200).json({ message: "Usuario seguido exitosamente" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -28,7 +28,7 @@ async function unfollowController(req, res) {
     await unfollowUserService(idFollower, idFollowed);
     res.status(200).json({ message: "Usuario dejado de seguir exitosamente" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -40,7 +40,7 @@ async function checkFollowStatusController(req, res) {
     const result = await checkFollowStatusService(idFollower, idFollowed);
     res.status(200).json(result);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -51,7 +51,7 @@ async function getFollowersController(req, res) {
     const followers = await getFollowersService(idFollowed);
     res.status(200).json(followers);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -62,7 +62,7 @@ async function getFollowingController(req, res) {
     const following = await getFollowingService(idFollower);
     res.status(200).json(following);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -73,7 +73,7 @@ async function getFollowersCountController(req, res) {
     const count = await getFollowersCountService(idFollowed);
     res.status(200).json({ count });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -84,7 +84,7 @@ async function getFollowingCountController(req, res) {
     const count = await getFollowingCountService(idFollower);
     res.status(200).json({ count });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 

@@ -9,14 +9,14 @@ type Props = {
 
 const getLikesCount = async (postId: number): Promise<number> => {
   const res = await axios.get(
-    `http://localhost:3000/api/likes/count/${postId}`,
+    `/api/likes/count/${postId}`,
   );
   return res.data.count;
 };
 
 const getLikedStatus = async (postId: number): Promise<boolean> => {
   const res = await axios.get(
-    `http://localhost:3000/api/likes/checklike/${postId}`,
+    `/api/likes/checklike/${postId}`,
   );
   return res.data.liked;
 };
@@ -37,7 +37,7 @@ function LikeButton({ postId }: Props) {
   const { mutate: toggleLike } = useMutation({
     mutationFn: () => {
       const endpoint = liked ? "unlike" : "like";
-      return axios.post(`http://localhost:3000/api/likes/${endpoint}`, {
+      return axios.post(`/api/likes/${endpoint}`, {
         idPost: postId,
       });
     },

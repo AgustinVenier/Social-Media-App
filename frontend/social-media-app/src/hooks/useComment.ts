@@ -7,7 +7,7 @@ function useComment(postId: string) {
     queryKey: ["comments", postId],
     queryFn: async (): Promise<Comment[]> => {
       const res = await axios.get(
-        `http://localhost:3000/api/comments/post/${postId}`,
+        `/api/comments/post/${postId}`,
       );
       return res.data;
     },

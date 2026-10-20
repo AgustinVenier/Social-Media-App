@@ -19,7 +19,7 @@ async function createCommentController(req, res) {
       commentId: result.id,
     });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -32,7 +32,7 @@ async function updateCommentController(req, res) {
     await updateCommentService(id, idUser, description);
     res.status(200).json({ message: "Comentario actualizado correctamente" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -44,7 +44,7 @@ async function deleteCommentController(req, res) {
     await deleteCommentService(id, idUser);
     res.status(200).json({ message: "Comentario eliminado correctamente" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -55,7 +55,7 @@ async function getCommentsCountByPostController(req, res) {
     const count = await getCommentsCountByPostService(idPost);
     res.status(200).json({ count });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -71,7 +71,7 @@ async function getCommentsByPostController(req, res) {
     );
     res.status(200).json(comments);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -82,7 +82,7 @@ async function getCommentsByUserController(req, res) {
     const comments = await getCommentsByUserService(idUser);
     res.status(200).json(comments);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 
@@ -93,7 +93,7 @@ async function getCommentsCountByUserController(req, res) {
     const count = await getCommentsCountByUserService(idUser);
     res.status(200).json({ count });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
 

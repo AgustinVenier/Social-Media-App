@@ -34,7 +34,7 @@ function NavBar({}: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const { mutate: logout } = useMutation({
     mutationFn: async () => {
-      await axios.post("http://localhost:3000/api/auth/logout");
+      await axios.post("/api/auth/logout");
     },
     onSuccess: () => {
       dispatch(clearUser());
@@ -49,7 +49,7 @@ function NavBar({}: Props) {
     reset,
   } = useMutation({
     mutationFn: async () => {
-      await axios.post("http://localhost:3000/api/follow/follow", {
+      await axios.post("/api/follow/follow", {
         username: inputRef.current?.value,
       });
     },
@@ -152,7 +152,7 @@ function NavBar({}: Props) {
             </form>
             {cookieUser.urlPhoto === "null" ? (
               <Image
-                src={cookieUser.urlPhoto}
+                src={cookieUser.urlPhoto ?? undefined}
                 alt="Profile"
                 boxSize="40px"
                 borderRadius="full"
@@ -160,7 +160,7 @@ function NavBar({}: Props) {
             ) : (
               <Avatar.Root size="md">
                 <Avatar.Image
-                  src={cookieUser.urlPhoto}
+                  src={cookieUser.urlPhoto ?? undefined}
                   alt="Profile"
                   boxSize="40px"
                   borderRadius="full"

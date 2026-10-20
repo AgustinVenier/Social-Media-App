@@ -19,7 +19,7 @@ function CreatePost({}: Props) {
     mutationKey: ["posts"],
     mutationFn: async (data: CreatePostFormData) => {
       const response = await axios.post(
-        "http://localhost:3000/api/posts/create",
+        "/api/posts/create",
         data,
       );
       return response.data;

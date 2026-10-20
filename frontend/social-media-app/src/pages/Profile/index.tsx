@@ -7,7 +7,7 @@ function Profile() {
 
   return (
     <PostList
-      url={`http://localhost:3000/api/posts/user/${userId}`}
+      url={`/api/posts/user/${userId}`}
       queryKey={["posts", "user", userId]}
     />
   );

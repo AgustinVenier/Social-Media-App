@@ -11,7 +11,7 @@ function useCreateComment(postId: string) {
         .post<{
           message: string;
           commentId: string;
-        }>(`http://localhost:3000/api/comments/create`, comment)
+        }>(`/api/comments/create`, comment)
         .then((res) => res.data);
     },
     onMutate: async (newComment) => {
@@ -40,7 +40,7 @@ function useCreateComment(postId: string) {
         },
       );
     },
-    onError: (error, newComment, context) => {
+    onError: (_error, _newComment, context) => {
       queryClient.setQueryData(["comments", postId], context);
     },
     onSettled: () => {

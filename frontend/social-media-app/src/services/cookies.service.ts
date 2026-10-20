@@ -8,7 +8,7 @@ export const setUserCookie = (userInfo: User) => {
   try {
     Cookies.set("userInfo", JSON.stringify(userInfo), {
       expires: 7,
-      secure: process.env.NODE_ENV === "production", // Solo HTTPS en producción
+      secure: import.meta.env.PROD, // Solo HTTPS en producción
       sameSite: "strict",
     });
     console.log("Usuario guardado en cookie");

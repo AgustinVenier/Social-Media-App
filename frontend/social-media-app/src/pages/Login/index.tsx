@@ -22,7 +22,7 @@ function Login({}: Props) {
     mutationFn: async (data: userSchema) => {
       console.log("📤 Enviando datos:", data);
       const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
+        "/api/auth/login",
         data,
       );
       return response.data;
