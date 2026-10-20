@@ -9,8 +9,9 @@ import {
 
 async function getFeedController(req, res) {
   const userId = req.user.userId;
+  const { page, limit } = req.query;
   try {
-    const feed = await getFeedService(userId);
+    const feed = await getFeedService(userId, page, limit);
     res.status(200).json(feed);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -66,8 +67,9 @@ async function getPostByIdController(req, res) {
 
 async function getPostsByUserController(req, res) {
   const { idUser } = req.params;
+  const { page, limit } = req.query;
   try {
-    const posts = await getPostsByUserService(idUser);
+    const posts = await getPostsByUserService(idUser, page, limit);
     res.status(200).json(posts);
   } catch (error) {
     res.status(400).json({ error: error.message });

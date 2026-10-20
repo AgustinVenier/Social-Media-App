@@ -1,6 +1,6 @@
 import { getPool } from "../../database/init.js";
 
-async function getFeed(userId) {
+async function getFeed(userId, limit, offset) {
   const pool = await getPool();
   const [rows] = await pool.query(
     `SELECT p.id, p.description, p.photoUrl, p.date, p.idUser, u.username, u.urlPhoto
@@ -8,8 +8,9 @@ async function getFeed(userId) {
      INNER JOIN Follow f ON p.idUser = f.idFollowed
      INNER JOIN User u ON p.idUser = u.id
      WHERE f.idFollower = ?
-     ORDER BY p.date DESC`,
-    [userId],
+     ORDER BY p.date DESC
+     LIMIT ? OFFSET ?`,
+    [userId, limit, offset],
   );
   return rows;
 }
@@ -40,18 +41,20 @@ async function updatePost(id, description, photoUrl) {
 
 async function getPostById(id) {
   const pool = await getPool();
-  const [rows] = await pool.query(
-    `SELECT * FROM Post WHERE id = ?`,
-    [id],
-  );
+  const [rows] = await pool.query(`SELECT * FROM Post WHERE id = ?`, [id]);
   return rows;
 }
 
-async function getPostsByUser(idUser) {
+async function getPostsByUser(idUser, limit, offset) {
   const pool = await getPool();
   const [rows] = await pool.query(
-    `SELECT * FROM Post WHERE idUser = ? ORDER BY date DESC`,
-    [idUser],
+    `SELECT p.id, p.description, p.photoUrl, p.date, p.idUser, u.username, u.urlPhoto
+     FROM Post p
+     INNER JOIN User u ON p.idUser = u.id
+     WHERE p.idUser = ?
+     ORDER BY p.date DESC
+     LIMIT ? OFFSET ?`,
+    [idUser, limit, offset],
   );
   return rows;
 }

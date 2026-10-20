@@ -7,12 +7,16 @@ import {
   getPostsByUser,
 } from "./post.repository.js";
 
-async function getFeedService(userId) {
+async function getFeedService(userId, page = 1, limit = 10) {
   try {
     if (!userId) {
       throw new Error("El usuario no está autenticado");
     }
-    const feed = await getFeed(userId);
+    const pageNumber = Number(page) > 0 ? Number(page) : 1;
+    const limitNumber = Number(limit) > 0 ? Number(limit) : 10;
+    const offset = (pageNumber - 1) * limitNumber;
+
+    const feed = await getFeed(userId, limitNumber, offset);
     if (!feed) {
       throw new Error("No se pudo obtener el feed");
     }
@@ -138,13 +142,17 @@ async function getPostByIdService(id) {
   }
 }
 
-async function getPostsByUserService(idUser) {
+async function getPostsByUserService(idUser, page = 1, limit = 10) {
   try {
     if (!idUser) {
       throw new Error("El ID del usuario es requerido");
     }
 
-    const posts = await getPostsByUser(idUser);
+    const pageNumber = Number(page) > 0 ? Number(page) : 1;
+    const limitNumber = Number(limit) > 0 ? Number(limit) : 10;
+    const offset = (pageNumber - 1) * limitNumber;
+
+    const posts = await getPostsByUser(idUser, limitNumber, offset);
     if (!posts) {
       throw new Error("No se pudieron obtener los posts del usuario");
     }

@@ -4,8 +4,16 @@ export interface User {
   urlPhoto: string | null;
 }
 
+export interface Comment {
+  id: string | number;
+  username: string;
+  idPost: number;
+  idUser: string;
+  description: string;
+  urlPhoto: string;
+  date: string;
+}
 export interface Post {
-  idUser: number;
   description: string;
   photoUrl: string;
 }

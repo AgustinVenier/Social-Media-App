@@ -1,9 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
 import { postSchema } from "./schemas/post.schema";
 import type { z } from "zod";
+import ButtonForm from "@/components/ButtonForm";
+import InputForm from "@/components/InputForm";
 
 type Props = {};
 type CreatePostFormData = z.infer<typeof postSchema>;
@@ -38,25 +40,20 @@ function CreatePost({}: Props) {
   return (
     <div>
       <h1>Create Post</h1>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="description">Description</label>
-          <input id="description" {...methods.register("description")} />
-        </div>
-        <div>
-          <label htmlFor="photo">Photo</label>
-          <input
-            id="photo"
-            type="file"
-            accept="image/*"
-            {...methods.register("photo")}
-          />
-        </div>
-        {error && <p className="text-red-500">{error.message}</p>}
-        <button type="submit" disabled={isPending}>
-          {isPending ? "Creating..." : "Create Post"}
-        </button>
-      </form>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <div>
+            <InputForm name="description">Description</InputForm>
+          </div>
+          <div>
+            <InputForm name="photoUrl" type="text">
+              PhotoUrl
+            </InputForm>
+          </div>
+          {error && <p className="text-red-500">{error.message}</p>}
+          <ButtonForm disabled={isPending}>Create Post</ButtonForm>
+        </form>
+      </FormProvider>
     </div>
   );
 }

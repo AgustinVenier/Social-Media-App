@@ -1,5 +1,5 @@
 import {
-  followUserService,
+  followUserByUsernameService,
   unfollowUserService,
   checkFollowStatusService,
   getFollowersService,
@@ -10,10 +10,10 @@ import {
 
 async function followController(req, res) {
   const idFollower = req.user.userId;
-  const { idFollowed } = req.body;
+  const { username } = req.body;
 
   try {
-    await followUserService(idFollower, idFollowed);
+    await followUserByUsernameService(idFollower, username);
     res.status(200).json({ message: "Usuario seguido exitosamente" });
   } catch (error) {
     res.status(400).json({ error: error.message });

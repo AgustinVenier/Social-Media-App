@@ -7,6 +7,24 @@ import {
   getFollowersCount,
   getFollowingCount,
 } from "./follow.repository.js";
+import { searchUserByName } from "../User/user.repository.js";
+
+async function followUserByUsernameService(idFollower, username) {
+  try {
+    if (!idFollower || !username) {
+      throw new Error("El nombre de usuario es requerido");
+    }
+
+    const users = await searchUserByName(username);
+    if (!users || users.length === 0) {
+      throw new Error("El usuario no existe");
+    }
+
+    return await followUserService(idFollower, users[0].id);
+  } catch (error) {
+    throw error;
+  }
+}
 
 async function followUserService(idFollower, idFollowed) {
   try {
@@ -119,6 +137,7 @@ async function getFollowingCountService(idFollower) {
 
 export {
   followUserService,
+  followUserByUsernameService,
   unfollowUserService,
   checkFollowStatusService,
   getFollowersService,

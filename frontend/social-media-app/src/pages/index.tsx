@@ -5,6 +5,7 @@ import Feed from "./Feed";
 import NavBar from "@/components/NavBar";
 import CreatePost from "./CreatePost";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Profile from "./Profile";
 
 export const router = createBrowserRouter([
   {
@@ -18,11 +19,15 @@ export const router = createBrowserRouter([
             index: true,
             element: <Feed />,
           },
+          {
+            path: "/create",
+            element: <CreatePost />,
+          },
+          {
+            path: "/profile",
+            element: <Profile />,
+          },
         ],
-      },
-      {
-        path: "/create",
-        element: <CreatePost />,
       },
     ],
   },
