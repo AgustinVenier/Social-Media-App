@@ -7,6 +7,13 @@ import {
 
 const SALT_ROUNDS = 10;
 
+function logDatabaseError(operation, error) {
+  // No registrar SQL, mensajes del driver ni datos de la solicitud.
+  if (typeof error.code === "string" && /^[A-Z0-9_]+$/.test(error.code)) {
+    console.error(`[auth:${operation}] database error: ${error.code}`);
+  }
+}
+
 async function registerController(req, res) {
   const { username, password } = req.body;
   try {
@@ -18,6 +25,7 @@ async function registerController(req, res) {
     await registerAuthService(username, passHashed);
     res.status(201).json({ message: "Usuario registrado exitosamente" });
   } catch (error) {
+    logDatabaseError("register", error);
     res.status(400).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
@@ -41,6 +49,7 @@ async function loginController(req, res) {
       .status(200)
       .json({ message: "Login exitoso", user });
   } catch (error) {
+    logDatabaseError("login", error);
     res.status(401).json({ error: process.env.NODE_ENV === "production" && error.code ? "No se pudo procesar la solicitud" : error.message });
   }
 }
